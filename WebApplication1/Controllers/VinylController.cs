@@ -68,6 +68,7 @@ namespace WebApplication1.Controllers
         {
             _repo.DeleteVinyl(id);
             return NoContent();
+
         }
 
     }
