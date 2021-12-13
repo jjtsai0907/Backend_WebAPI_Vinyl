@@ -1,4 +1,5 @@
-﻿using WebApplication1.NewFolder;
+﻿using WebApplication1.DTOs;
+using WebApplication1.NewFolder;
 
 namespace WebApplication1.NewFolder1
 {
@@ -8,7 +9,7 @@ namespace WebApplication1.NewFolder1
 
         Vinyl GetByID(int id);
 
-        Vinyl CreateVinyl(Vinyl vinyl);
+        Vinyl CreateVinyl(CreateVinylDTO vinyl);
 
         Vinyl UpdateVinyl(Vinyl vinyl);
 

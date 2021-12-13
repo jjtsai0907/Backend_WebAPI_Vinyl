@@ -1,4 +1,5 @@
-﻿using WebApplication1.NewFolder;
+﻿using WebApplication1.DTOs;
+using WebApplication1.NewFolder;
 
 namespace WebApplication1.NewFolder1
 {
@@ -14,11 +15,15 @@ namespace WebApplication1.NewFolder1
             
         }
 
-        public Vinyl CreateVinyl(Vinyl vinyl)
+        public Vinyl CreateVinyl(CreateVinylDTO createdvinylDTO)
         {
+            Vinyl vinyl = new Vinyl();
+
             vinyl.Created = DateTime.Now;
             vinyl.Id = _vinyls.Max(x => x.Id) + 1; // to secure the id in the database, like UUID
+            
             _vinyls.Add(vinyl);
+            
             return vinyl;
         }
 

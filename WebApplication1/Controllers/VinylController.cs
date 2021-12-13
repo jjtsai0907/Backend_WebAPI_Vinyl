@@ -59,9 +59,9 @@ namespace WebApplication1.Controllers
 
         [HttpPost("")]
         //public Vinyl CreateVinyl([FromBody] Vinyl vinyl)
-        public IActionResult CreateVinyl([FromBody] Vinyl vinyl)
+        public IActionResult CreateVinyl([FromBody] CreateVinylDTO createVinylDTO)
         {
-            Vinyl createdVinyl = _repo.CreateVinyl(vinyl);
+            Vinyl createdVinyl = _repo.CreateVinyl(createVinylDTO);
 
             VinylDTO vinylDTO = MapVinylToDTO(createdVinyl);
 
