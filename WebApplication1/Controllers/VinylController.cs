@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebApplication1.DTOs;
 using WebApplication1.NewFolder;
 using WebApplication1.NewFolder1;
 
@@ -23,7 +24,19 @@ namespace WebApplication1.Controllers
         //public List<Vinyl> GetVinyls()
         public IActionResult GetVinyls()
         {
-            List<Vinyl> vinyls = _repo.GetAll();
+            //List<Vinyl> vinyls = _repo.GetAll();
+            IOrderedEnumerable<VinylDTO> vinyls = _repo
+                .GetAll()
+                .Select(v => new VinylDTO
+            {
+                Id = v.Id,
+                Artist = v.Artist,
+                Title = v.Title
+            })
+                .OrderBy(x => x.Artist)
+                
+                ;
+
             return Ok(vinyls);
         }
 
@@ -37,9 +50,10 @@ namespace WebApplication1.Controllers
             if (vinyl is null)
             {
                 return NotFound("Joel, I cannot find the vinyl: " + id);
+            
             }
-
-            return Ok(vinyl);
+            VinylDTO vinylDTO = MapVinylToDTO(vinyl);
+            return Ok(vinylDTO);
         }
 
 
@@ -48,10 +62,13 @@ namespace WebApplication1.Controllers
         public IActionResult CreateVinyl([FromBody] Vinyl vinyl)
         {
             Vinyl createdVinyl = _repo.CreateVinyl(vinyl);
+
+            VinylDTO vinylDTO = MapVinylToDTO(createdVinyl);
+
             return CreatedAtAction(
                 nameof(GetVinylByID),
-                new { id = createdVinyl.Id },
-                createdVinyl);
+                new { id = vinylDTO.Id },
+                vinylDTO);
         }
 
         [HttpPut("")]  // put is more popular than patch
@@ -59,7 +76,8 @@ namespace WebApplication1.Controllers
         public IActionResult UpdateVinyl([FromBody] Vinyl vinyl)
         {
             Vinyl updatedVinyl = _repo.UpdateVinyl(vinyl);
-            return Ok(updatedVinyl);
+            VinylDTO vinylDTO = MapVinylToDTO(updatedVinyl);
+            return Ok(vinylDTO);
         }
 
         [HttpDelete("{id}")]
@@ -69,6 +87,17 @@ namespace WebApplication1.Controllers
             _repo.DeleteVinyl(id);
             return NoContent();
 
+        }
+
+
+        private VinylDTO MapVinylToDTO(Vinyl vinyl)
+        {
+            return new VinylDTO
+            {
+                Id = vinyl.Id,
+                Artist = vinyl.Artist,
+                Title = vinyl.Title
+            };
         }
 
     }
